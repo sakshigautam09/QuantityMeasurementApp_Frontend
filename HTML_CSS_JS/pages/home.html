@@ -1,0 +1,30 @@
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h2>Measure. Convert.<br/><em>Calculate.</em></h2>
+    <p>Perform length, weight, volume &amp; temperature operations — no login required.<br/>Sign in to save and view your full history.</p>
+  </div>
+  <div class="quick-grid">
+    <div class="quick-card" onclick="navigate('length', null)">
+      <div class="quick-card-icon">📏</div>
+      <div class="quick-card-name">Length</div>
+      <div class="quick-card-desc">Feet, Inches, Yards, CM</div>
+    </div>
+    <div class="quick-card" onclick="navigate('weight', null)">
+      <div class="quick-card-icon">⚖️</div>
+      <div class="quick-card-name">Weight</div>
+      <div class="quick-card-desc">KG, Gram, Pound</div>
+    </div>
+    <div class="quick-card" onclick="navigate('volume', null)">
+      <div class="quick-card-icon">💧</div>
+      <div class="quick-card-name">Volume</div>
+      <div class="quick-card-desc">Litre, mL, Gallon</div>
+    </div>
+    <div class="quick-card" onclick="navigate('temperature', null)">
+      <div class="quick-card-icon">🌡️</div>
+      <div class="quick-card-name">Temperature</div>
+      <div class="quick-card-desc">Celsius, Fahrenheit, Kelvin</div>
+    </div>
+  </div>
+  <div id="recentOps"></div>
+</div>

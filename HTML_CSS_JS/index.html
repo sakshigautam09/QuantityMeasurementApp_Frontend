@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuantiCalc — Measurement Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- ─── STYLES ─── -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-icon">⚖️</div>
+      <div class="logo-text">Quanti<span>Calc</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Dashboard</div>
+      <button class="nav-btn active" onclick="navigate('home', this)">
+        <span class="icon">🏠</span> Home
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Measurements</div>
+      <button class="nav-btn" onclick="navigate('length', this)">
+        <span class="icon">📏</span> Length
+      </button>
+      <button class="nav-btn" onclick="navigate('weight', this)">
+        <span class="icon">⚖️</span> Weight
+      </button>
+      <button class="nav-btn" onclick="navigate('volume', this)">
+        <span class="icon">💧</span> Volume
+      </button>
+      <button class="nav-btn" onclick="navigate('temperature', this)">
+        <span class="icon">🌡️</span> Temperature
+      </button>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sidebar-section">
+      <button class="nav-btn" onclick="navigate('history', this)" id="historyNavBtn">
+        <span class="icon">📋</span> History
+        <span class="badge" id="histBadge" style="display:none">•</span>
+      </button>
+    </div>
+
+    <div class="user-panel" id="userPanel">
+      <!-- populated by JS -->
+    </div>
+  </aside>
+
+  <!-- ─── MAIN ─── -->
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <h1 id="topbarTitle">Dashboard <span>Overview</span></h1>
+      <div class="topbar-right">
+        <span class="tag online" id="apiStatusTag">API Connected</span>
+        <span class="tag" id="authStatusTag">Guest Mode</span>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ─── PAGES ─── -->
+
+      <!-- HOME PAGE -->
+      <div class="page active" id="page-home">
+        <div class="hero">
+          <h2>Measure. Convert.<br/><em>Calculate.</em></h2>
+          <p>Perform length, weight, volume &amp; temperature operations — no login required.<br/>Sign in to save and view your full history.</p>
+        </div>
+        <div class="quick-grid">
+          <div class="quick-card" onclick="navigate('length', null)">
+            <div class="quick-card-icon">📏</div>
+            <div class="quick-card-name">Length</div>
+            <div class="quick-card-desc">Feet, Inches, Yards, CM</div>
+          </div>
+          <div class="quick-card" onclick="navigate('weight', null)">
+            <div class="quick-card-icon">⚖️</div>
+            <div class="quick-card-name">Weight</div>
+            <div class="quick-card-desc">KG, Gram, Pound</div>
+          </div>
+          <div class="quick-card" onclick="navigate('volume', null)">
+            <div class="quick-card-icon">💧</div>
+            <div class="quick-card-name">Volume</div>
+            <div class="quick-card-desc">Litre, mL, Gallon</div>
+          </div>
+          <div class="quick-card" onclick="navigate('temperature', null)">
+            <div class="quick-card-icon">🌡️</div>
+            <div class="quick-card-name">Temperature</div>
+            <div class="quick-card-desc">Celsius, Fahrenheit, Kelvin</div>
+          </div>
+        </div>
+        <div id="recentOps"></div>
+      </div>
+
+      <!-- LENGTH PAGE -->
+      <div class="page" id="page-length">
+        <div class="op-card">
+          <div class="op-card-header">
+            <div class="op-icon">📏</div>
+            <div>
+              <div class="op-title">Length Operations</div>
+              <div class="op-desc">Compare, Convert, Add, Subtract, Divide length units</div>
+            </div>
+          </div>
+          <div class="op-tabs" id="length-tabs"></div>
+          <div id="length-form"></div>
+          <div class="result-box" id="length-result"></div>
+        </div>
+      </div>
+
+      <!-- WEIGHT PAGE -->
+      <div class="page" id="page-weight">
+        <div class="op-card">
+          <div class="op-card-header">
+            <div class="op-icon">⚖️</div>
+            <div>
+              <div class="op-title">Weight Operations</div>
+              <div class="op-desc">Compare, Convert, Add, Subtract, Divide weight units</div>
+            </div>
+          </div>
+          <div class="op-tabs" id="weight-tabs"></div>
+          <div id="weight-form"></div>
+          <div class="result-box" id="weight-result"></div>
+        </div>
+      </div>
+
+      <!-- VOLUME PAGE -->
+      <div class="page" id="page-volume">
+        <div class="op-card">
+          <div class="op-card-header">
+            <div class="op-icon">💧</div>
+            <div>
+              <div class="op-title">Volume Operations</div>
+              <div class="op-desc">Compare, Convert, Add, Subtract, Divide volume units</div>
+            </div>
+          </div>
+          <div class="op-tabs" id="volume-tabs"></div>
+          <div id="volume-form"></div>
+          <div class="result-box" id="volume-result"></div>
+        </div>
+      </div>
+
+      <!-- TEMPERATURE PAGE -->
+      <div class="page" id="page-temperature">
+        <div class="op-card">
+          <div class="op-card-header">
+            <div class="op-icon">🌡️</div>
+            <div>
+              <div class="op-title">Temperature Operations</div>
+              <div class="op-desc">Compare &amp; Convert temperature units (Add/Subtract not supported)</div>
+            </div>
+          </div>
+          <div class="op-tabs" id="temperature-tabs"></div>
+          <div id="temperature-form"></div>
+          <div class="result-box" id="temperature-result"></div>
+        </div>
+      </div>
+
+      <!-- HISTORY PAGE -->
+      <div class="page" id="page-history">
+        <div id="historyContent"></div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ─── TOAST CONTAINER ─── -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ─── AUTH MODAL ─── -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="close-modal" onclick="closeModal()">✕</button>
+    <h2 id="modalTitle">Welcome back</h2>
+    <p id="modalSubtitle">Sign in to save your history</p>
+
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="loginTab" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="modal-tab" id="registerTab" onclick="switchAuthTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <div class="modal-form">
+        <div class="form-field">
+          <label>Username</label>
+          <input type="text" id="loginUsername" placeholder="your_username" />
+        </div>
+        <div class="form-field">
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="••••••••" />
+        </div>
+        <button class="modal-btn" onclick="doLogin()" id="loginBtn">Sign In</button>
+      </div>
+      <div class="divider-text" style="margin:14px 0">or</div>
+      <button class="google-btn" onclick="triggerGoogleLogin()">
+        <svg class="google-icon" viewBox="0 0 48 48">
+          <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.6 33.6 29.2 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 6 1.1 8.2 3l5.7-5.7C34.5 6.1 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.9z"/>
+          <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 19 12 24 12c3.1 0 6 1.1 8.2 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/>
+          <path fill="#4CAF50" d="M24 44c5.2 0 10-.2 13.6-3.4l-6.3-5.2C29.2 37 26.7 38 24 38c-5.1 0-9.5-3.4-11.2-8l-6.6 5C9.5 41.3 16.2 44 24 44z"/>
+          <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.3 5.2C43 34.9 44 29.8 44 24c0-1.3-.1-2.7-.4-3.9z"/>
+        </svg>
+        Continue with Google
+      </button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none">
+      <div class="modal-form">
+        <div class="form-field">
+          <label>Username</label>
+          <input type="text" id="regUsername" placeholder="choose_username" />
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" id="regEmail" placeholder="you@example.com" />
+        </div>
+        <div class="form-field">
+          <label>Password</label>
+          <input type="password" id="regPassword" placeholder="min 6 characters" />
+        </div>
+        <button class="modal-btn" onclick="doRegister()" id="registerBtn">Create Account</button>
+      </div>
+    </div>
+
+    <!-- Hidden Google One Tap -->
+    <div id="g_id_onload"
+      data-client_id="621930458072-e1r85is40jvtcb3l1509se4m6f04ekb0.apps.googleusercontent.com"
+      data-callback="handleGoogleCredential"
+      data-auto_prompt="false">
+    </div>
+  </div>
+</div>
+
+<!-- ─── SCRIPTS ─── -->
+<!-- Load order matters: config → state → api → helpers → navigation → operations → history → auth → app -->
+<script src="js/config.js"></script>
+<script src="js/state.js"></script>
+<script src="js/api.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/operations.js"></script>
+<script src="js/history.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
