@@ -1,0 +1,134 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+$qc-primary: mat.m2-define-palette(mat.$m2-teal-palette, 400);
+$qc-accent:  mat.m2-define-palette(mat.$m2-blue-palette, A200);
+$qc-warn:    mat.m2-define-palette(mat.$m2-red-palette);
+
+$qc-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $qc-primary,
+    accent: $qc-accent,
+    warn: $qc-warn
+  ),
+  typography: mat.m2-define-typography-config(),
+  density: 0
+));
+
+@include mat.all-component-themes($qc-theme);
+
+// ─── CSS Variables ───
+:root {
+  --bg:         #0b0c10;
+  --surface:    #111318;
+  --surface2:   #181c24;
+  --border:     #ffffff0f;
+  --border2:    #ffffff18;
+  --accent:     #00e5a0;
+  --accent-dim: #00e5a020;
+  --accent2:    #4d9fff;
+  --text:       #e8eaf0;
+  --text-muted: #7a8094;
+  --error:      #ff5f6d;
+  --warn:       #ffb547;
+  --radius:     14px;
+  --radius-sm:  8px;
+  --font-head:  'Cabinet Grotesk', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--font-mono);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+// ─── Background grid ───
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,229,160,0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,160,0.028) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+// Subtle radial glow in top-left
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,229,160,0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+// ─── Material dialog overrides ───
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: var(--surface) !important;
+  border-radius: 20px !important;
+}
+
+.qc-dialog-backdrop {
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+}
+
+.qc-dialog-panel .mat-mdc-dialog-surface {
+  background: var(--surface) !important;
+  border: 1px solid var(--border2);
+  border-radius: 20px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) !important;
+}
+
+// Material select panel
+.mat-mdc-select-panel {
+  background: #181c24 !important;
+  border: 1px solid var(--border2) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+}
+
+.mat-mdc-option {
+  color: var(--text) !important;
+  &:hover, &.mat-mdc-option-active { background: rgba(0,229,160,0.07) !important; }
+  &.mdc-list-item--selected { color: var(--accent) !important; }
+}
+
+.mat-mdc-input-element {
+  color: var(--text) !important;
+  caret-color: var(--accent) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--accent) !important;
+}
+
+.mat-mdc-progress-spinner circle { stroke: var(--accent) !important; }
+
+// ─── Page enter animation ───
+router-outlet + * { animation: pageIn 0.22s ease; }
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ─── Scrollbar ───
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }

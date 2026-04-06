@@ -1,0 +1,20 @@
+<mat-toolbar class="topbar">
+  <button mat-icon-button class="menu-toggle" (click)="menuToggle.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="page-title">
+    {{ pageTitle }} <span class="accent">{{ pageTitleAccent }}</span>
+  </span>
+
+  <span class="spacer"></span>
+
+  <div class="status-chips">
+    <span class="status-chip user-chip" *ngIf="auth.isLoggedIn(); else guestChip">
+      &#64;{{ auth.user()?.username }}
+    </span>
+    <ng-template #guestChip>
+      <span class="status-chip">Guest Mode</span>
+    </ng-template>
+  </div>
+</mat-toolbar>

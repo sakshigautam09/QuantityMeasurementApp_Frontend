@@ -1,0 +1,216 @@
+.auth-dialog {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 36px 32px 32px;
+  width: 420px;
+  max-width: 92vw;
+  // ✅ Fixed height so login & register are the same size
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  color: var(--text);
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+
+    &:hover {
+      color: var(--error);
+      border-color: var(--error);
+      background: rgba(255,95,109,0.08);
+    }
+  }
+
+  // Header section
+  .dialog-header {
+    text-align: center;
+    margin-bottom: 24px;
+
+    .dialog-logo {
+      font-size: 40px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    h2 {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+  }
+
+  // Tab switcher
+  .tab-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 24px;
+    background: var(--surface2);
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-weight: 500;
+
+      &.active {
+        background: var(--accent);
+        color: #000;
+        font-weight: 700;
+        box-shadow: 0 2px 12px rgba(0,229,160,0.25);
+      }
+    }
+  }
+
+  // Form
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 2px;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 4px;
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding-left: 2px;
+    }
+  }
+
+  .w100 { width: 100%; }
+
+  // Spacer to push button to same vertical position on both tabs
+  .form-spacer {
+    flex: 1;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 14px !important;
+    background: var(--accent) !important;
+    color: #000 !important;
+    border-radius: 10px !important;
+    font-family: var(--font-mono) !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(0,229,160,0.2);
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.1);
+      box-shadow: 0 6px 24px rgba(0,229,160,0.3);
+      transform: translateY(-1px);
+    }
+
+    &:disabled { opacity: 0.6; transform: none; }
+  }
+
+  // OR divider
+  .or-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 0 12px;
+    color: var(--text-muted);
+    font-size: 12px;
+
+    &::before, &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border2);
+    }
+
+    span { white-space: nowrap; }
+  }
+
+  // Google button wrapper
+  .google-btn-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .switch-hint {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 16px;
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 0 2px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+
+      &:hover { opacity: 0.8; }
+    }
+  }
+}
+
+// Material overrides
+::ng-deep .auth-dialog {
+  .mdc-outlined-text-field {
+    --mdc-outlined-text-field-outline-color: var(--border2);
+    --mdc-outlined-text-field-focus-outline-color: var(--accent);
+    --mdc-outlined-text-field-label-text-color: var(--text-muted);
+    --mdc-outlined-text-field-input-text-color: var(--text);
+  }
+  .mat-mdc-text-field-wrapper { background: var(--surface2) !important; }
+  .mat-mdc-form-field-subscript-wrapper { min-height: 20px; }
+  .mat-icon { color: var(--text-muted) !important; }
+}

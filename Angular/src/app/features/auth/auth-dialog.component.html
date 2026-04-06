@@ -1,0 +1,110 @@
+<div class="auth-dialog">
+
+  <!-- Close -->
+  <button class="close-btn" mat-dialog-close>✕</button>
+
+  <!-- Header -->
+  <div class="dialog-header">
+    <div class="dialog-logo">⚖️</div>
+    <h2>{{ activeTab === 'login' ? 'Welcome back' : 'Create account' }}</h2>
+    <p>{{ activeTab === 'login' ? 'Sign in to save your history' : 'Get started for free' }}</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-row">
+    <button class="tab-btn" [class.active]="activeTab === 'login'"    (click)="switchTab('login')">Sign In</button>
+    <button class="tab-btn" [class.active]="activeTab === 'register'" (click)="switchTab('register')">Register</button>
+  </div>
+
+  <!-- ── LOGIN FORM ── -->
+  <form *ngIf="activeTab === 'login'" [formGroup]="loginForm" (ngSubmit)="doLogin()" class="auth-form">
+
+    <div class="field-group">
+      <label class="field-label">Username</label>
+      <mat-form-field appearance="outline" class="w100">
+        <input matInput formControlName="username" placeholder="your_username" autocomplete="username" />
+        <mat-error *ngIf="loginForm.get('username')?.hasError('required')">Username is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Password</label>
+      <mat-form-field appearance="outline" class="w100">
+        <input matInput
+          [type]="showLoginPwd ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password" />
+        <button mat-icon-button matSuffix type="button" (click)="showLoginPwd = !showLoginPwd">
+          <mat-icon>{{ showLoginPwd ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Spacer pushes button to same position as register tab -->
+    <div class="form-spacer"></div>
+
+    <button mat-flat-button class="submit-btn" type="submit" [disabled]="loadingLogin">
+      <mat-spinner *ngIf="loadingLogin" diameter="18"></mat-spinner>
+      <span *ngIf="!loadingLogin">Sign In →</span>
+    </button>
+
+    <!-- OR divider + Google -->
+    <div class="or-divider"><span>or continue with</span></div>
+    <div id="googleSignInBtn" class="google-btn-wrap"></div>
+
+    <p class="switch-hint">
+      Don't have an account?
+      <button type="button" class="link-btn" (click)="switchTab('register')">Register</button>
+    </p>
+  </form>
+
+  <!-- ── REGISTER FORM ── -->
+  <form *ngIf="activeTab === 'register'" [formGroup]="registerForm" (ngSubmit)="doRegister()" class="auth-form">
+
+    <div class="field-group">
+      <label class="field-label">Username</label>
+      <mat-form-field appearance="outline" class="w100">
+        <input matInput formControlName="username" placeholder="choose_username" autocomplete="username" />
+        <mat-error *ngIf="registerForm.get('username')?.hasError('required')">Username is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Email</label>
+      <mat-form-field appearance="outline" class="w100">
+        <input matInput type="email" formControlName="email" placeholder="you@example.com" autocomplete="email" />
+        <mat-error *ngIf="registerForm.get('email')?.hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="registerForm.get('email')?.hasError('email')">Enter a valid email</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Password</label>
+      <mat-form-field appearance="outline" class="w100">
+        <input matInput
+          [type]="showRegPwd ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="min 6 characters"
+          autocomplete="new-password" />
+        <button mat-icon-button matSuffix type="button" (click)="showRegPwd = !showRegPwd">
+          <mat-icon>{{ showRegPwd ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="registerForm.get('password')?.hasError('required')">Password is required</mat-error>
+        <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">Minimum 6 characters</mat-error>
+      </mat-form-field>
+    </div>
+
+    <button mat-flat-button class="submit-btn" type="submit" [disabled]="loadingRegister">
+      <mat-spinner *ngIf="loadingRegister" diameter="18"></mat-spinner>
+      <span *ngIf="!loadingRegister">Create Account →</span>
+    </button>
+
+    <p class="switch-hint">
+      Already have an account?
+      <button type="button" class="link-btn" (click)="switchTab('login')">Sign In</button>
+    </p>
+  </form>
+
+</div>

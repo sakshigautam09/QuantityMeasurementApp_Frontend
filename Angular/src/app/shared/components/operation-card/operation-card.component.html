@@ -1,0 +1,109 @@
+<mat-card class="op-card">
+  <!-- Card Header -->
+  <div class="op-card-header">
+    <div class="op-icon">{{ emoji }}</div>
+    <div>
+      <div class="op-title">{{ category }} Operations</div>
+      <div class="op-desc">{{ description }}</div>
+    </div>
+  </div>
+
+  <!-- Operation Tabs -->
+  <div class="op-tabs">
+    <button
+      *ngFor="let op of ops"
+      class="op-tab"
+      [class.active]="activeOp === op"
+      (click)="selectOp(op)">
+      {{ opLabels[op] }}
+    </button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="run()">
+
+    <!-- Convert: single value + 2 unit selects -->
+    <ng-container *ngIf="isSingleValue; else dualInput">
+      <div class="form-row single">
+        <mat-form-field appearance="outline" class="flex-field">
+          <mat-label>Value</mat-label>
+          <input matInput type="number" formControlName="v1" placeholder="0" min="0" />
+          <mat-error *ngIf="form.get('v1')?.hasError('required')">Required</mat-error>
+          <mat-error *ngIf="form.get('v1')?.hasError('min')">Must be ≥ 0</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="flex-field">
+          <mat-label>From Unit</mat-label>
+          <mat-select formControlName="u1">
+            <mat-option *ngFor="let u of units" [value]="u.v">{{ u.l }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="op-sym">→</div>
+
+        <mat-form-field appearance="outline" class="flex-field">
+          <mat-label>To Unit</mat-label>
+          <mat-select formControlName="u2">
+            <mat-option *ngFor="let u of units" [value]="u.v">{{ u.l }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </ng-container>
+
+    <!-- Compare / Add / Subtract / Divide: two value inputs -->
+    <ng-template #dualInput>
+      <div class="form-row dual">
+        <div class="input-group">
+          <mat-form-field appearance="outline" class="full-field">
+            <mat-label>First Value</mat-label>
+            <input matInput type="number" formControlName="v1" placeholder="0" min="0" />
+            <mat-error *ngIf="form.get('v1')?.hasError('required')">Required</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-field">
+            <mat-label>Unit</mat-label>
+            <mat-select formControlName="u1">
+              <mat-option *ngFor="let u of units" [value]="u.v">{{ u.l }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="op-sym">{{ opSymbol }}</div>
+
+        <div class="input-group">
+          <mat-form-field appearance="outline" class="full-field">
+            <mat-label>Second Value</mat-label>
+            <input matInput type="number" formControlName="v2" placeholder="0" min="0" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-field">
+            <mat-label>Unit</mat-label>
+            <mat-select formControlName="u2">
+              <mat-option *ngFor="let u of units" [value]="u.v">{{ u.l }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- Submit Button -->
+    <button
+      mat-flat-button
+      class="run-btn"
+      type="submit"
+      [disabled]="loading">
+      <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      <span *ngIf="!loading">{{ opLabels[activeOp] }}</span>
+    </button>
+  </form>
+
+  <!-- Result -->
+  <div class="result-box success" *ngIf="result && !resultError">
+    <div class="result-label">Result</div>
+    <div class="result-value">{{ displayResult }}</div>
+    <div class="result-detail">{{ displayDetail }}</div>
+  </div>
+
+  <div class="result-box error" *ngIf="resultError">
+    <div class="result-label">Error</div>
+    <div class="result-value error-text">{{ resultError }}</div>
+  </div>
+</mat-card>

@@ -1,0 +1,80 @@
+<div class="home-page">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h2>Measure. Convert.<br/><em>Calculate.</em></h2>
+    <p>Perform length, weight, volume &amp; temperature operations — no login required.<br/>
+       Sign in to save and view your full history.</p>
+  </div>
+
+  <!-- Quick Cards -->
+  <div class="quick-grid">
+    <div
+      class="quick-card"
+      *ngFor="let card of quickCards"
+      (click)="navigate(card.route)">
+      <div class="quick-card-icon">{{ card.emoji }}</div>
+      <div class="quick-card-name">{{ card.label }}</div>
+      <div class="quick-card-desc">{{ card.desc }}</div>
+    </div>
+  </div>
+
+  <!-- ── LOGGED IN: summary + recent history ── -->
+  <ng-container *ngIf="auth.isLoggedIn()">
+
+    <!-- Stats row -->
+    <div class="stats-row" *ngIf="totalOps > 0">
+      <div class="stat-card">
+        <div class="stat-value">{{ totalOps }}</div>
+        <div class="stat-label">Total Operations</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ recentOps[0] ? recentOps[0].Operation : '—' }}</div>
+        <div class="stat-label">Last Operation</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ recentOps[0] ? recentOps[0].ThisMeasurementType : '—' }}</div>
+        <div class="stat-label">Last Category</div>
+      </div>
+      <div class="stat-card accent-card" (click)="navigate('/history')">
+        <div class="stat-value">📋</div>
+        <div class="stat-label">View Full History</div>
+      </div>
+    </div>
+
+    <!-- Recent ops -->
+    <div class="recent-section" *ngIf="recentOps.length > 0">
+      <div class="section-header">
+        <div class="section-label">Recent Activity</div>
+        <button class="view-all-btn" (click)="navigate('/history')">View all →</button>
+      </div>
+      <div class="history-list">
+        <div class="history-item" *ngFor="let item of recentOps" [class.has-error]="item.IsError">
+          <span class="hist-op">{{ item.Operation }}</span>
+          <div class="hist-info">
+            <div class="hist-expr">{{ getDisplayExpr(item) }}</div>
+            <div class="hist-result" [class.err]="item.IsError">{{ getDisplayResult(item) }}</div>
+          </div>
+          <span class="hist-cat">{{ item.ThisMeasurementType }}</span>
+          <span class="hist-time">{{ formatTime(item.Timestamp) }}</span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ── GUEST: feature highlights ── -->
+  <ng-container *ngIf="!auth.isLoggedIn()">
+    <div class="features-section">
+      <div class="section-label">What you can do</div>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let f of guestFeatures">
+          <div class="feature-emoji">{{ f.emoji }}</div>
+          <div class="feature-label">{{ f.label }}</div>
+          <div class="feature-value">{{ f.value }}</div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>
