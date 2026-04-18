@@ -42,12 +42,13 @@
       </mat-form-field>
     </div>
 
+    <!-- Spacer pushes button to same position as register (which has 3 fields) -->
+    <div class="form-spacer"></div>
 
     <button mat-flat-button class="submit-btn" type="submit" [disabled]="loadingLogin">
       <mat-spinner *ngIf="loadingLogin" diameter="18"></mat-spinner>
       <span *ngIf="!loadingLogin">Sign In →</span>
     </button>
-
 
     <p class="switch-hint">
       Don't have an account?

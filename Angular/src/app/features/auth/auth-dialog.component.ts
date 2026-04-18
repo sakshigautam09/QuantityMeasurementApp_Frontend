@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -9,9 +9,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
-import { environment } from '../../../environments/environment';
-
-declare const google: any;
 
 @Component({
   selector: 'app-auth-dialog',
@@ -24,7 +21,7 @@ declare const google: any;
   templateUrl: './auth-dialog.component.html',
   styleUrls: ['./auth-dialog.component.scss']
 })
-export class AuthDialogComponent implements OnInit {
+export class AuthDialogComponent {
   private fb        = inject(FormBuilder);
   private auth      = inject(AuthService);
   private toast     = inject(ToastService);
@@ -35,7 +32,6 @@ export class AuthDialogComponent implements OnInit {
   loadingRegister = false;
   showLoginPwd    = false;
   showRegPwd      = false;
-  private googleInitialized = false;
 
   loginForm = this.fb.group({
     username: ['', Validators.required],
@@ -48,47 +44,10 @@ export class AuthDialogComponent implements OnInit {
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
-  ngOnInit(): void {
-    // Give Google SDK time to load before initialising
-    setTimeout(() => this.initGoogle(), 600);
-  }
-
-  private initGoogle(): void {
-    if (this.googleInitialized || typeof google === 'undefined') return;
-    try {
-      google.accounts.id.initialize({
-        client_id: environment.googleClientId,
-        callback:  (res: any) => this.handleGoogleCredential(res)
-      });
-      this.googleInitialized = true;
-      this.renderGoogleButton();
-    } catch (e) {
-      console.error('Google init error', e);
-    }
-  }
-
-  private renderGoogleButton(): void {
-    const el = document.getElementById('googleSignInBtn');
-    if (!el || !this.googleInitialized) return;
-    try {
-      google.accounts.id.renderButton(el, {
-        theme:  'filled_black',
-        size:   'large',
-        width:  336,
-        text:   'signin_with',
-        shape:  'rectangular'
-      });
-    } catch (e) {
-      console.error('Google render error', e);
-    }
-  }
-
   switchTab(tab: 'login' | 'register'): void {
-    this.activeTab   = tab;
+    this.activeTab    = tab;
     this.showLoginPwd = false;
     this.showRegPwd   = false;
-    // Re-render Google button when switching back to login
-    if (tab === 'login') setTimeout(() => this.renderGoogleButton(), 150);
   }
 
   doLogin(): void {
@@ -130,18 +89,6 @@ export class AuthDialogComponent implements OnInit {
         this.loadingRegister = false;
         this.toast.error(err.message);
       }
-    });
-  }
-
-  handleGoogleCredential(response: any): void {
-    const idToken = response?.credential;
-    if (!idToken) { this.toast.error('Google sign-in failed'); return; }
-    this.auth.googleLogin({ IdToken: idToken }).subscribe({
-      next: (res) => {
-        this.toast.success(`Signed in as ${res.Username}`);
-        this.dialogRef.close(true);
-      },
-      error: (err: Error) => this.toast.error(err.message)
     });
   }
 }
