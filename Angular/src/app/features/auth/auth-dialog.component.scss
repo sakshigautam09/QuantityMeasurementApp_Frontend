@@ -1,12 +1,9 @@
 .auth-dialog {
   background: var(--surface);
   border-radius: 20px;
-  padding: 24px 28px 24px;   // reduced padding
+  padding: 20px 24px 20px;
   width: 420px;
   max-width: 92vw;
-  // Use min-height instead of fixed height so it never overflows
-  // Both tabs look same size because login has form-spacer
-  min-height: 0;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -19,16 +16,15 @@
     background: var(--surface2);
     border: 1px solid var(--border2);
     color: var(--text-muted);
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.15s;
-
     &:hover {
       color: var(--error);
       border-color: var(--error);
@@ -36,46 +32,37 @@
     }
   }
 
-  // Header section — compact
   .dialog-header {
     text-align: center;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 
-    .dialog-logo {
-      font-size: 30px;
-      margin-bottom: 6px;
-      display: block;
-    }
+    .dialog-logo { font-size: 26px; margin-bottom: 4px; display: block; }
 
     h2 {
       font-family: var(--font-head);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       color: var(--text);
       margin-bottom: 2px;
     }
 
-    p {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    p { font-size: 11px; color: var(--text-muted); }
   }
 
-  // Tab switcher
   .tab-row {
     display: flex;
-    gap: 6px;
-    margin-bottom: 14px;
+    gap: 5px;
+    margin-bottom: 12px;
     background: var(--surface2);
     padding: 4px;
-    border-radius: 10px;
+    border-radius: 9px;
     border: 1px solid var(--border);
 
     .tab-btn {
       flex: 1;
-      padding: 8px;
+      padding: 7px;
       border: none;
-      border-radius: 7px;
+      border-radius: 6px;
       background: transparent;
       color: var(--text-muted);
       font-family: var(--font-mono);
@@ -93,44 +80,37 @@
     }
   }
 
-  // Form
   .auth-form {
     display: flex;
     flex-direction: column;
-    flex: 1;
   }
 
   .field-group {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    margin-bottom: 0;
+    margin-bottom: 2px;
 
     .field-label {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       color: var(--text-muted);
       letter-spacing: 0.5px;
       text-transform: uppercase;
       padding-left: 2px;
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
   }
 
   .w100 { width: 100%; }
 
-  // Spacer — pushes button to same position on login (2 fields) as register (3 fields)
-  .form-spacer {
-    flex: 1;
-    min-height: 8px;
-  }
+  .form-spacer { height: 12px; }
 
   .submit-btn {
     width: 100%;
-    padding: 12px !important;
+    padding: 11px !important;
     background: var(--accent) !important;
     color: #000 !important;
-    border-radius: 10px !important;
+    border-radius: 9px !important;
     font-family: var(--font-mono) !important;
     font-size: 14px !important;
     font-weight: 700 !important;
@@ -140,22 +120,20 @@
     justify-content: center;
     gap: 8px;
     transition: all 0.2s;
-    box-shadow: 0 4px 16px rgba(0,229,160,0.2);
+    box-shadow: 0 4px 12px rgba(0,229,160,0.2);
 
     &:hover:not(:disabled) {
       filter: brightness(1.1);
-      box-shadow: 0 6px 24px rgba(0,229,160,0.3);
       transform: translateY(-1px);
     }
-
     &:disabled { opacity: 0.6; transform: none; }
   }
 
   .switch-hint {
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    margin-top: 10px;
+    margin-top: 8px;
 
     .link-btn {
       background: none;
@@ -163,28 +141,27 @@
       color: var(--accent);
       cursor: pointer;
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       padding: 0 2px;
       text-decoration: underline;
       text-underline-offset: 3px;
-
       &:hover { opacity: 0.8; }
     }
   }
 }
 
-// Reduce Material form field density inside dialog
+// Compact Material form fields
 ::ng-deep .qc-dialog-panel {
   .mdc-outlined-text-field {
     --mdc-outlined-text-field-outline-color: var(--border2);
     --mdc-outlined-text-field-focus-outline-color: var(--accent);
     --mdc-outlined-text-field-label-text-color: var(--text-muted);
     --mdc-outlined-text-field-input-text-color: var(--text);
-    --mdc-outlined-text-field-container-height: 44px;  // compact height
   }
   .mat-mdc-text-field-wrapper { background: var(--surface2) !important; }
-  .mat-mdc-form-field-subscript-wrapper { min-height: 14px !important; }
-  .mat-mdc-form-field { margin-bottom: 0 !important; }
+  // Key: shrink the subscript (error message area) to minimum
+  .mat-mdc-form-field-subscript-wrapper { min-height: 0 !important; height: 0 !important; overflow: hidden; }
+  .mat-mdc-form-field-bottom-align { display: none !important; }
   .mat-icon { color: var(--text-muted) !important; }
 }
