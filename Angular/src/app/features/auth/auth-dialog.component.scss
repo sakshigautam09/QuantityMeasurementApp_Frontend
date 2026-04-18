@@ -4,8 +4,11 @@
   padding: 36px 32px 32px;
   width: 420px;
   max-width: 92vw;
-  // Fixed height — login and register are exactly the same size
-  height: 520px;   // ← NO space between 520 and px (was "520 px" = broken)
+  // Fixed height — same for both login and register
+  height: 520px;
+  // Prevents dialog from going off screen on small/mobile screens
+  max-height: 90vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -119,7 +122,6 @@
   .w100 { width: 100%; }
 
   // Spacer — pushes submit button to same vertical position on login tab
-  // (login has 2 fields, register has 3 — spacer compensates)
   .form-spacer {
     flex: 1;
   }
