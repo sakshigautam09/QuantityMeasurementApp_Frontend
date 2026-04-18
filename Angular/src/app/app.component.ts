@@ -45,7 +45,6 @@ export class AppComponent implements OnInit {
   pageMeta    = signal<PageMeta>({ title: 'Dashboard', accent: 'Overview' });
 
   ngOnInit(): void {
-    // Update page title on route changes
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: any) => {
@@ -54,7 +53,6 @@ export class AppComponent implements OnInit {
         this.sidebarOpen.set(false);
       });
 
-    // Check API health
     this.checkApi();
   }
 
@@ -74,8 +72,9 @@ export class AppComponent implements OnInit {
 
   openAuthDialog(): void {
     this.dialog.open(AuthDialogComponent, {
-      width: '420px',
-      maxWidth: '95vw',
+      width:     '420px',
+      maxWidth:  '95vw',
+      maxHeight: '95vh',   // ← Prevents dialog from going off screen
       panelClass: 'qc-dialog-panel'
     });
   }
