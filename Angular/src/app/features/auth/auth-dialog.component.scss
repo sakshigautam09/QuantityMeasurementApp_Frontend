@@ -4,10 +4,13 @@
   padding: 20px 24px 20px;
   width: 420px;
   max-width: 92vw;
+  /* FIXED height — both login and register are identical size */
+  height: 460px;
   display: flex;
   flex-direction: column;
   position: relative;
   color: var(--text);
+  box-sizing: border-box;
 
   .close-btn {
     position: absolute;
@@ -35,6 +38,7 @@
   .dialog-header {
     text-align: center;
     margin-bottom: 12px;
+    flex-shrink: 0;
 
     .dialog-logo { font-size: 26px; margin-bottom: 4px; display: block; }
 
@@ -57,6 +61,7 @@
     padding: 4px;
     border-radius: 9px;
     border: 1px solid var(--border);
+    flex-shrink: 0;
 
     .tab-btn {
       flex: 1;
@@ -80,14 +85,18 @@
     }
   }
 
+  /* Form fills ALL remaining space inside the fixed height box */
   .auth-form {
     display: flex;
     flex-direction: column;
+    flex: 1;          /* stretch to fill remaining height */
+    min-height: 0;
   }
 
   .field-group {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
     margin-bottom: 2px;
 
     .field-label {
@@ -103,7 +112,11 @@
 
   .w100 { width: 100%; }
 
-  .form-spacer { height: 12px; }
+  /* Spacer grows to fill gap — pushes button down on login tab
+     so button sits at exact same Y position as register tab */
+  .form-spacer {
+    flex: 1;
+  }
 
   .submit-btn {
     width: 100%;
@@ -115,6 +128,7 @@
     font-size: 14px !important;
     font-weight: 700 !important;
     margin-top: 8px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -134,6 +148,7 @@
     font-size: 11px;
     color: var(--text-muted);
     margin-top: 8px;
+    flex-shrink: 0;
 
     .link-btn {
       background: none;
@@ -151,7 +166,7 @@
   }
 }
 
-// Compact Material form fields
+/* Compact Material form fields — hide empty error space */
 ::ng-deep .qc-dialog-panel {
   .mdc-outlined-text-field {
     --mdc-outlined-text-field-outline-color: var(--border2);
@@ -160,7 +175,6 @@
     --mdc-outlined-text-field-input-text-color: var(--text);
   }
   .mat-mdc-text-field-wrapper { background: var(--surface2) !important; }
-  // Key: shrink the subscript (error message area) to minimum
   .mat-mdc-form-field-subscript-wrapper { min-height: 0 !important; height: 0 !important; overflow: hidden; }
   .mat-mdc-form-field-bottom-align { display: none !important; }
   .mat-icon { color: var(--text-muted) !important; }
